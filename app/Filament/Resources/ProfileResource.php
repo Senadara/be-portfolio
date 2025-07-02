@@ -12,6 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
 
 class ProfileResource extends Resource
 {
@@ -29,7 +31,11 @@ class ProfileResource extends Resource
                 Forms\Components\TextInput::make('email'),
                 Forms\Components\TextInput::make('phone'),
                 Forms\Components\TextInput::make('address'),
-                Forms\Components\TextInput::make('photo'),
+                FileUpload::make('photo')
+                    ->image()
+                    ->directory('profile-photos')
+                    ->disk('public_uploads')
+                    ->visibility('public'),
             ]);
     }
 
@@ -43,7 +49,10 @@ class ProfileResource extends Resource
                 Tables\Columns\TextColumn::make('email')->label('Email'),
                 Tables\Columns\TextColumn::make('phone')->label('Phone'),
                 Tables\Columns\TextColumn::make('address')->label('Address'),
-                Tables\Columns\TextColumn::make('photo')->label('Photo'),
+                ImageColumn::make('photo')
+                    ->label('Photo')
+                    ->url(fn ($record) => asset('profile-photos/' . $record->photo))
+                    ->height(50),
             ])
             ->filters([
                 //

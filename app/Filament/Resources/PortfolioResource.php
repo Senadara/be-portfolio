@@ -12,6 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
 
 class PortfolioResource extends Resource
 {
@@ -25,7 +27,12 @@ class PortfolioResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')->required(),
                 Forms\Components\Textarea::make('description'),
-                Forms\Components\TextInput::make('image'),
+                FileUpload::make('image')
+                    ->image()
+                    ->directory('portfolio-images')
+                    ->disk('public_uploads')
+                    ->visibility('public')
+                    ->required(),
             ]);
     }
 
@@ -35,7 +42,10 @@ class PortfolioResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')->label('Title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('description')->label('Description'),
-                Tables\Columns\TextColumn::make('image')->label('Image'),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->url(fn ($record) => asset('portfolio-images/' . $record->image))
+                    ->height(50),
             ])
             ->filters([
                 //

@@ -12,6 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
 
 class SkillResource extends Resource
 {
@@ -24,7 +26,11 @@ class SkillResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('icon'),
+                FileUpload::make('icon')
+                    ->image()
+                    ->directory('skill-icons')
+                    ->disk('public_uploads')
+                    ->visibility('public'),
                 Forms\Components\Textarea::make('description'),
             ]);
     }
@@ -34,7 +40,10 @@ class SkillResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('icon')->label('Icon'),
+                ImageColumn::make('icon')
+                    ->label('Icon')
+                    ->url(fn ($record) => asset('skill-icons/' . $record->icon))
+                    ->height(40),
                 Tables\Columns\TextColumn::make('description')->label('Description'),
             ])
             ->filters([
