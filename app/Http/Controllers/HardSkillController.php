@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Skill;
+use App\Models\HardSkill;
 use Illuminate\Http\Request;
 
-class SkillController extends Controller
+class HardSkillController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,9 +13,9 @@ class SkillController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => \App\Models\Skill::all()]);
+            return response()->json(['data' => HardSkill::all()]);
         }
-        return view('skills.index', ['skills' => \App\Models\Skill::all()]);
+        return view('hard-skills.index', ['hardSkills' => HardSkill::all()]);
     }
 
     /**
@@ -26,7 +26,7 @@ class SkillController extends Controller
         if ($request->expectsJson() || $request->wantsJson()) {
             return response()->json(['message' => 'Not supported for API'], 405);
         }
-        return view('skills.create');
+        return view('hard-skills.create');
     }
 
     /**
@@ -38,62 +38,71 @@ class SkillController extends Controller
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
+            'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        $skill = \App\Models\Skill::create($validated);
+        
+        $hardSkill = HardSkill::create($validated);
+        
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $skill], 201);
+            return response()->json(['data' => $hardSkill], 201);
         }
-        return redirect()->route('skills.index')->with('success', 'Skill created!');
+        return redirect()->route('hard-skills.index')->with('success', 'Hard Skill created!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, \App\Models\Skill $skill)
+    public function show(Request $request, HardSkill $hardSkill)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $skill]);
+            return response()->json(['data' => $hardSkill]);
         }
-        return view('skills.show', ['skill' => $skill]);
+        return view('hard-skills.show', ['hardSkill' => $hardSkill]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, \App\Models\Skill $skill)
+    public function edit(Request $request, HardSkill $hardSkill)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
             return response()->json(['message' => 'Not supported for API'], 405);
         }
-        return view('skills.edit', ['skill' => $skill]);
+        return view('hard-skills.edit', ['hardSkill' => $hardSkill]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, \App\Models\Skill $skill)
+    public function update(Request $request, HardSkill $hardSkill)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
+            'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        $skill->update($validated);
+        
+        $hardSkill->update($validated);
+        
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $skill]);
+            return response()->json(['data' => $hardSkill]);
         }
-        return redirect()->route('skills.index')->with('success', 'Skill updated!');
+        return redirect()->route('hard-skills.index')->with('success', 'Hard Skill updated!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, \App\Models\Skill $skill)
+    public function destroy(Request $request, HardSkill $hardSkill)
     {
-        $skill->delete();
+        $hardSkill->delete();
+        
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['message' => 'Skill deleted']);
+            return response()->json(['message' => 'Hard Skill deleted']);
         }
-        return redirect()->route('skills.index')->with('success', 'Skill deleted!');
+        return redirect()->route('hard-skills.index')->with('success', 'Hard Skill deleted!');
     }
 }

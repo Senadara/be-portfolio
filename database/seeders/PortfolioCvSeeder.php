@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Profile;
-use App\Models\Skill;
+use App\Models\Tool;
 use App\Models\Portfolio;
 use App\Models\Education;
 use Illuminate\Support\Facades\DB;
@@ -30,39 +30,39 @@ class PortfolioCvSeeder extends Seeder
             'photo' => 'profile1.png',
         ]);
 
-        // Skills
-        $skills = [
-            ['name' => 'JUnit', 'icon' => 'skill1.png', 'description' => 'Testing & QA'],
-            ['name' => 'PHPUnit', 'icon' => 'skill2.png', 'description' => 'Testing & QA'],
-            ['name' => 'Postman', 'icon' => 'skill3.png', 'description' => 'Testing & QA'],
-            ['name' => 'JMeter', 'icon' => 'skill4.png', 'description' => 'Testing & QA'],
-            ['name' => 'Katalon', 'icon' => 'skill5.png', 'description' => 'Testing & QA'],
-            ['name' => 'Xray', 'icon' => 'skill6.png', 'description' => 'Testing & QA'],
-            ['name' => 'SonarQube', 'icon' => 'skill7.png', 'description' => 'Testing & QA'],
-            ['name' => 'ClickUp', 'icon' => 'skill8.png', 'description' => 'PM & Tools'],
-            ['name' => 'Jira', 'icon' => 'skill9.png', 'description' => 'PM & Tools'],
-            ['name' => 'GitLab Board', 'icon' => 'skill10.png', 'description' => 'PM & Tools'],
-            ['name' => 'Trello', 'icon' => 'skill11.png', 'description' => 'PM & Tools'],
-            ['name' => 'Gantt Chart', 'icon' => 'skill12.png', 'description' => 'PM & Tools'],
-            ['name' => 'Laravel', 'icon' => 'skill13.png', 'description' => 'Development'],
-            ['name' => 'React.js', 'icon' => 'skill14.png', 'description' => 'Development'],
-            ['name' => 'HTML/CSS', 'icon' => 'skill15.png', 'description' => 'Development'],
-            ['name' => 'REST API', 'icon' => 'skill16.png', 'description' => 'Development'],
-            ['name' => 'MySQL', 'icon' => 'skill17.png', 'description' => 'Development'],
-            ['name' => '.Net', 'icon' => 'skill18.png', 'description' => 'Development'],
-            ['name' => 'User Stories', 'icon' => 'skill19.png', 'description' => 'Documentation'],
-            ['name' => 'Acceptance Criteria', 'icon' => 'skill20.png', 'description' => 'Documentation'],
-            ['name' => 'QA Documentation', 'icon' => 'skill21.png', 'description' => 'Documentation'],
-            ['name' => 'SDLC', 'icon' => 'skill22.png', 'description' => 'Others'],
-            ['name' => 'STLC', 'icon' => 'skill23.png', 'description' => 'Others'],
-            ['name' => 'Agile Scrum', 'icon' => 'skill24.png', 'description' => 'Others'],
-            ['name' => 'Wireframing', 'icon' => 'skill25.png', 'description' => 'Others'],
-            ['name' => 'SQL', 'icon' => 'skill26.png', 'description' => 'Others'],
+        // Tools (migrated from old skills table)
+        $tools = [
+            ['name' => 'JUnit', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', 'description' => 'Java testing framework', 'category' => 'Testing & QA', 'proficiency_level' => 4],
+            ['name' => 'PHPUnit', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', 'description' => 'PHP testing framework', 'category' => 'Testing & QA', 'proficiency_level' => 4],
+            ['name' => 'Postman', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', 'description' => 'API testing platform', 'category' => 'Testing & QA', 'proficiency_level' => 4],
+            ['name' => 'JMeter', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg', 'description' => 'Performance testing', 'category' => 'Testing & QA', 'proficiency_level' => 3],
+            ['name' => 'Katalon', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/katalon/katalon-original.svg', 'description' => 'Automated testing', 'category' => 'Testing & QA', 'proficiency_level' => 3],
+            ['name' => 'Xray', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg', 'description' => 'Jira test management', 'category' => 'Testing & QA', 'proficiency_level' => 3],
+            ['name' => 'SonarQube', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg', 'description' => 'Code quality analysis', 'category' => 'Testing & QA', 'proficiency_level' => 3],
+            ['name' => 'ClickUp', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/clickup/clickup-original.svg', 'description' => 'Project management platform', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'Jira', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg', 'description' => 'Agile project management', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'GitLab Board', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg', 'description' => 'GitLab project management', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'Trello', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg', 'description' => 'Visual project management', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'Gantt Chart', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gantt/gantt-original.svg', 'description' => 'Project scheduling', 'category' => 'Project Management', 'proficiency_level' => 3],
+            ['name' => 'Laravel', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg', 'description' => 'PHP web framework', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'React.js', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', 'description' => 'Frontend JavaScript library', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'HTML/CSS', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', 'description' => 'Web markup and styling', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'REST API', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/api/api-original.svg', 'description' => 'API development', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'MySQL', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', 'description' => 'Relational database', 'category' => 'Database', 'proficiency_level' => 4],
+            ['name' => '.NET', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg', 'description' => 'Microsoft framework', 'category' => 'Development', 'proficiency_level' => 3],
+            ['name' => 'User Stories', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Requirements documentation', 'category' => 'Documentation', 'proficiency_level' => 4],
+            ['name' => 'Acceptance Criteria', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Feature acceptance criteria', 'category' => 'Documentation', 'proficiency_level' => 4],
+            ['name' => 'QA Documentation', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Quality assurance documentation', 'category' => 'Documentation', 'proficiency_level' => 4],
+            ['name' => 'SDLC', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Software Development Life Cycle', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'STLC', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Software Testing Life Cycle', 'category' => 'Testing & QA', 'proficiency_level' => 4],
+            ['name' => 'Agile Scrum', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Agile methodology', 'category' => 'Project Management', 'proficiency_level' => 4],
+            ['name' => 'Wireframing', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', 'description' => 'Creating wireframes', 'category' => 'Design', 'proficiency_level' => 3],
+            ['name' => 'SQL', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', 'description' => 'Database query language', 'category' => 'Database', 'proficiency_level' => 4],
         ];
-        foreach ($skills as $skill) {
-            Skill::updateOrCreate([
-                'name' => $skill['name']
-            ], $skill);
+        foreach ($tools as $tool) {
+            Tool::updateOrCreate([
+                'name' => $tool['name']
+            ], $tool);
         }
 
         // Portfolio

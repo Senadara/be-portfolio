@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Achievement;
 use App\Models\Education;
-use App\Models\Skill;
+use App\Models\Tool;
 use Illuminate\Support\Facades\DB;
 use App\Models\Portfolio;
 use App\Models\Profile;
@@ -124,39 +124,28 @@ class ExperienceEducationCertificationSeeder extends Seeder
             ], $achievement);
         }
 
-        // Skills (Tools & Hard Skills only)
-        $skills = [
-            // Hard Skills
-            ['name' => 'Software Development', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/code/code-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Project Management', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Software Quality Assurance', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/checkmarx/checkmarx-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Software Documentation', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/markdown/markdown-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Network Structure & Security', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/networkx/networkx-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'IoT (Internet of Things)', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Mobile Application Development', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Web Development', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Quality Control', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/checkmarx/checkmarx-original.svg', 'description' => 'Hard Skill'],
-            ['name' => 'Project Management Software (MS Project, Jira)', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg', 'description' => 'Hard Skill'],
-            // Tools
-            ['name' => 'React', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', 'description' => 'Tool'],
-            ['name' => 'Laravel', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg', 'description' => 'Tool'],
-            ['name' => 'Figma', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', 'description' => 'Tool'],
-            ['name' => 'Bootstrap', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg', 'description' => 'Tool'],
-            ['name' => 'Tailwind', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg', 'description' => 'Tool'],
-            ['name' => 'MySQL', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', 'description' => 'Tool'],
-            ['name' => 'MongoDB', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', 'description' => 'Tool'],
-            ['name' => 'Git', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', 'description' => 'Tool'],
-            ['name' => 'VS Code', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', 'description' => 'Tool'],
-            ['name' => 'Postman', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', 'description' => 'Tool'],
-            ['name' => 'TensorFlow', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg', 'description' => 'Tool'],
-            ['name' => 'Arduino', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg', 'description' => 'Tool'],
-            ['name' => 'Maze', 'icon' => null, 'description' => 'Tool'],
-            ['name' => 'Notion', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg', 'description' => 'Tool'],
+        // Tools (migrated from old skills table)
+        $tools = [
+            // Development Tools
+            ['name' => 'React', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', 'description' => 'Frontend JavaScript library', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'Laravel', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg', 'description' => 'PHP web framework', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'Figma', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', 'description' => 'UI/UX design tool', 'category' => 'Design', 'proficiency_level' => 3],
+            ['name' => 'Bootstrap', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg', 'description' => 'CSS framework', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'Tailwind CSS', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg', 'description' => 'Utility-first CSS', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'MySQL', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', 'description' => 'Relational database', 'category' => 'Database', 'proficiency_level' => 4],
+            ['name' => 'MongoDB', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', 'description' => 'NoSQL database', 'category' => 'Database', 'proficiency_level' => 3],
+            ['name' => 'Git', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', 'description' => 'Version control', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'VS Code', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', 'description' => 'Code editor', 'category' => 'Development', 'proficiency_level' => 4],
+            ['name' => 'Postman', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', 'description' => 'API testing platform', 'category' => 'Testing & QA', 'proficiency_level' => 4],
+            ['name' => 'TensorFlow', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg', 'description' => 'Machine learning framework', 'category' => 'AI & ML', 'proficiency_level' => 3],
+            ['name' => 'Arduino', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg', 'description' => 'IoT platform', 'category' => 'IoT', 'proficiency_level' => 3],
+            ['name' => 'Maze', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg', 'description' => 'IoT development platform', 'category' => 'IoT', 'proficiency_level' => 3],
+            ['name' => 'Notion', 'icon' => 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg', 'description' => 'Documentation workspace', 'category' => 'Productivity', 'proficiency_level' => 4],
         ];
-        foreach ($skills as $skill) {
-            Skill::updateOrCreate([
-                'name' => $skill['name']
-            ], $skill);
+        foreach ($tools as $tool) {
+            Tool::updateOrCreate([
+                'name' => $tool['name']
+            ], $tool);
         }
 
         // Portfolios
