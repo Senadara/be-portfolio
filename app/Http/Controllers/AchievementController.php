@@ -38,9 +38,16 @@ class AchievementController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date' => 'nullable|date',
+            'image' => 'nullable|image|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $filename = uniqid() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('achievement-images'), $filename);
+            $validated['image'] = 'achievement-images/' . $filename;
+        }
         $achievement = \App\Models\Achievement::create($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
+            $achievement->image_url = $achievement->getImageUrl('image');
             return response()->json(['data' => $achievement], 201);
         }
         return redirect()->route('achievements.index')->with('success', 'Achievement created!');
@@ -77,9 +84,16 @@ class AchievementController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date' => 'nullable|date',
+            'image' => 'nullable|image|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $filename = uniqid() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('achievement-images'), $filename);
+            $validated['image'] = 'achievement-images/' . $filename;
+        }
         $achievement->update($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
+            $achievement->image_url = $achievement->getImageUrl('image');
             return response()->json(['data' => $achievement]);
         }
         return redirect()->route('achievements.index')->with('success', 'Achievement updated!');

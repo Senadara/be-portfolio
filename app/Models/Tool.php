@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasImage;
 
 class Tool extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImage;
 
     protected $fillable = [
         'name',

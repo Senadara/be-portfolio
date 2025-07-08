@@ -64,6 +64,7 @@ class ToolResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('icon')
                     ->label('Icon')
+                    ->url(fn ($record) => $record->getImageUrl('icon'))
                     ->circular()
                     ->height(32)
                     ->width(32),

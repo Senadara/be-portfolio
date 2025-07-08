@@ -34,7 +34,7 @@ class ProfileResource extends Resource
                 FileUpload::make('photo')
                     ->image()
                     ->directory('profile-photos')
-                    ->disk('public_uploads')
+                    ->disk('public')
                     ->visibility('public'),
             ]);
     }
@@ -49,9 +49,9 @@ class ProfileResource extends Resource
                 Tables\Columns\TextColumn::make('email')->label('Email'),
                 Tables\Columns\TextColumn::make('phone')->label('Phone'),
                 Tables\Columns\TextColumn::make('address')->label('Address'),
+
                 ImageColumn::make('photo')
-                    ->label('Photo')
-                    ->url(fn ($record) => asset('profile-photos/' . $record->photo))
+                    ->url(fn ($record) => $record->getImageUrl('photo'))
                     ->height(50),
             ])
             ->filters([
@@ -64,14 +64,14 @@ class ProfileResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -79,5 +79,5 @@ class ProfileResource extends Resource
             'create' => Pages\CreateProfile::route('/create'),
             'edit' => Pages\EditProfile::route('/{record}/edit'),
         ];
-    }    
+    }
 }

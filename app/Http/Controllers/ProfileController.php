@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -13,9 +14,9 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => \App\Models\Profile::all()]);
+            return ProfileResource::collection(Profile::all());
         }
-        return view('profiles.index', ['profiles' => \App\Models\Profile::all()]);
+        return view('profiles.index', ['profiles' => Profile::all()]);
     }
 
     /**
@@ -41,11 +42,18 @@ class ProfileController extends Controller
             'email' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:2048',
         ]);
-        $profile = \App\Models\Profile::create($validated);
+
+        if ($request->hasFile('photo')) {
+            $filename = uniqid() . '-' . $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->move(public_path('profile-photos'), $filename);
+            $validated['photo'] = 'profile-photos/' . $filename;
+        }
+
+        $profile = Profile::create($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $profile], 201);
+            return new ProfileResource($profile);
         }
         return redirect()->route('profiles.index')->with('success', 'Profile created!');
     }
@@ -53,10 +61,10 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, \App\Models\Profile $profile)
+    public function show(Request $request, Profile $profile)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $profile]);
+            return new ProfileResource($profile);
         }
         return view('profiles.show', ['profile' => $profile]);
     }
@@ -75,7 +83,7 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, \App\Models\Profile $profile)
+    public function update(Request $request, Profile $profile)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -84,11 +92,18 @@ class ProfileController extends Controller
             'email' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('photo')) {
+            $filename = uniqid() . '-' . $request->file('photo')->getClientOriginalName();
+            $request->file('photo')->move(public_path('profile-photos'), $filename);
+            $validated['photo'] = 'profile-photos/' . $filename;
+        }
+
         $profile->update($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $profile]);
+            return new ProfileResource($profile);
         }
         return redirect()->route('profiles.index')->with('success', 'Profile updated!');
     }

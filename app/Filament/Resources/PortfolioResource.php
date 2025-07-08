@@ -30,9 +30,10 @@ class PortfolioResource extends Resource
                 FileUpload::make('image')
                     ->image()
                     ->directory('portfolio-images')
-                    ->disk('public_uploads')
+                    ->disk('public')
                     ->visibility('public')
                     ->required(),
+                Forms\Components\TextInput::make('link')->label('Link')->url(),
             ]);
     }
 
@@ -44,8 +45,9 @@ class PortfolioResource extends Resource
                 Tables\Columns\TextColumn::make('description')->label('Description'),
                 ImageColumn::make('image')
                     ->label('Image')
-                    ->url(fn ($record) => asset('portfolio-images/' . $record->image))
+                    ->url(fn ($record) => $record->getImageUrl('image'))
                     ->height(50),
+                Tables\Columns\TextColumn::make('link')->label('Link')->url(fn ($record) => $record->link)->openUrlInNewTab(),
             ])
             ->filters([
                 //

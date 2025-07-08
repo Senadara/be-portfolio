@@ -13,7 +13,11 @@ class ToolController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => Tool::all()]);
+            $tools = Tool::all()->map(function ($tool) {
+                $tool->icon_url = $tool->getImageUrl('icon');
+                return $tool;
+            });
+            return response()->json(['data' => $tools]);
         }
         return view('tools.index', ['tools' => Tool::all()]);
     }
@@ -43,7 +47,7 @@ class ToolController extends Controller
         ]);
         
         $tool = Tool::create($validated);
-        
+        $tool->icon_url = $tool->getImageUrl('icon');
         if ($request->expectsJson() || $request->wantsJson()) {
             return response()->json(['data' => $tool], 201);
         }
@@ -56,6 +60,7 @@ class ToolController extends Controller
     public function show(Request $request, Tool $tool)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
+            $tool->icon_url = $tool->getImageUrl('icon');
             return response()->json(['data' => $tool]);
         }
         return view('tools.show', ['tool' => $tool]);
@@ -86,7 +91,7 @@ class ToolController extends Controller
         ]);
         
         $tool->update($validated);
-        
+        $tool->icon_url = $tool->getImageUrl('icon');
         if ($request->expectsJson() || $request->wantsJson()) {
             return response()->json(['data' => $tool]);
         }

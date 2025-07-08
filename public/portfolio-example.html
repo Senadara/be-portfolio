@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">Portfolio Examples</h1>
+        
+        <!-- Portfolio Grid -->
+        <div id="portfolios-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Portfolios will be loaded here -->
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <p class="mt-2 text-gray-600">Loading portfolios...</p>
+        </div>
+        
+        <!-- Error State -->
+        <div id="error" class="hidden text-center py-8">
+            <p class="text-red-600">Error loading portfolios. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Include the JavaScript -->
+    <script src="/js/portfolio-example.js"></script>
+    
+    <script>
+        // Additional error handling
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+        });
+        
+        // Test image loading
+        function testImageLoading() {
+            fetch('/api/portfolios')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API Response:', data);
+                    
+                    if (data.data && data.data.length > 0) {
+                        data.data.forEach(portfolio => {
+                            if (portfolio.image) {
+                                const img = new Image();
+                                img.onload = () => console.log(`✅ Image loaded: ${portfolio.image}`);
+                                img.onerror = () => console.error(`❌ Image failed to load: ${portfolio.image}`);
+                                img.src = portfolio.image;
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+        }
+        
+        // Run test after page loads
+        setTimeout(testImageLoading, 1000);
+    </script>
+</body>
+</html> 

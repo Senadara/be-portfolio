@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
+use App\Http\Resources\PortfolioResource;
 use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
@@ -13,9 +14,9 @@ class PortfolioController extends Controller
     public function index(Request $request)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => \App\Models\Portfolio::all()]);
+            return PortfolioResource::collection(Portfolio::all());
         }
-        return view('portfolios.index', ['portfolios' => \App\Models\Portfolio::all()]);
+        return view('portfolios.index', ['portfolios' => Portfolio::all()]);
     }
 
     /**
@@ -37,10 +38,16 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
         ]);
-        $portfolio = \App\Models\Portfolio::create($validated);
+        if ($request->hasFile('image')) {
+            $filename = uniqid() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('portfolio-images'), $filename);
+            $validated['image'] = 'portfolio-images/' . $filename;
+        }
+        $portfolio = Portfolio::create($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
+            $portfolio->image_url = $portfolio->getImageUrl('image');
             return response()->json(['data' => $portfolio], 201);
         }
         return redirect()->route('portfolios.index')->with('success', 'Portfolio created!');
@@ -49,10 +56,10 @@ class PortfolioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, \App\Models\Portfolio $portfolio)
+    public function show(Request $request, Portfolio $portfolio)
     {
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['data' => $portfolio]);
+            return new PortfolioResource($portfolio);
         }
         return view('portfolios.show', ['portfolio' => $portfolio]);
     }
@@ -71,15 +78,21 @@ class PortfolioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, \App\Models\Portfolio $portfolio)
+    public function update(Request $request, Portfolio $portfolio)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
         ]);
+        if ($request->hasFile('image')) {
+            $filename = uniqid() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('portfolio-images'), $filename);
+            $validated['image'] = 'portfolio-images/' . $filename;
+        }
         $portfolio->update($validated);
         if ($request->expectsJson() || $request->wantsJson()) {
+            $portfolio->image_url = $portfolio->getImageUrl('image');
             return response()->json(['data' => $portfolio]);
         }
         return redirect()->route('portfolios.index')->with('success', 'Portfolio updated!');
@@ -88,7 +101,7 @@ class PortfolioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, \App\Models\Portfolio $portfolio)
+    public function destroy(Request $request, Portfolio $portfolio)
     {
         $portfolio->delete();
         if ($request->expectsJson() || $request->wantsJson()) {

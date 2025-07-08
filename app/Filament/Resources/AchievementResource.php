@@ -12,6 +12,9 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Storage;
 
 class AchievementResource extends Resource
 {
@@ -26,6 +29,11 @@ class AchievementResource extends Resource
                 Forms\Components\TextInput::make('title')->required(),
                 Forms\Components\Textarea::make('description'),
                 Forms\Components\DatePicker::make('date'),
+                FileUpload::make('image')
+                    ->image()
+                    ->directory('achievement-images')
+                    ->disk('public')
+                    ->visibility('public'),
             ]);
     }
 
@@ -36,6 +44,10 @@ class AchievementResource extends Resource
                 Tables\Columns\TextColumn::make('title')->label('Title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('description')->label('Description'),
                 Tables\Columns\TextColumn::make('date')->label('Date'),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->url(fn ($record) => $record->getImageUrl('image'))
+                    ->height(50),
             ])
             ->filters([
                 //
