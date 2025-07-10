@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Log;
 
 class PortfolioResource extends Resource
 {
@@ -30,9 +31,29 @@ class PortfolioResource extends Resource
                 FileUpload::make('image')
                     ->image()
                     ->directory('portfolio-images')
-                    ->disk('public')
-                    ->visibility('public')
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return uniqid() . '-' . $file->getClientOriginalName();
+                    })
+                    ->afterStateUpdated(function ($state, $component) {
+                        \Log::info('afterStateUpdated called', ['state' => $state]);
+                        $storagePath = storage_path('app/' . $state);
+                        $publicPath = public_path('portfolio-images/' . basename($state));
+                        if ($state && file_exists($storagePath)) {
+                            \Log::info('File exists in storage, copying...', ['from' => $storagePath, 'to' => $publicPath]);
+                            if (copy($storagePath, $publicPath)) {
+                                unlink($storagePath);
+                                $component->state('portfolio-images/' . basename($state));
+                                \Log::info('File copied to public and state updated.');
+                            } else {
+                                \Log::error('Failed to copy file from storage to public.', ['from' => $storagePath, 'to' => $publicPath]);
+                            }
+                        } else {
+                            \Log::error('File not found in storage.', ['expected' => $storagePath]);
+                        }
+                    })
                     ->required(),
+                Forms\Components\View::make('components.image-preview')
+                    ->visible(fn ($get) => $get('image')),
                 Forms\Components\TextInput::make('link')->label('Link')->url(),
             ]);
     }

@@ -34,8 +34,18 @@ class ProfileResource extends Resource
                 FileUpload::make('photo')
                     ->image()
                     ->directory('profile-photos')
-                    ->disk('public')
-                    ->visibility('public'),
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return uniqid() . '-' . $file->getClientOriginalName();
+                    })
+                    ->afterStateUpdated(function ($state, $component) {
+                        $storagePath = storage_path('app/' . $state);
+                        $publicPath = public_path('profile-photos/' . basename($state));
+                        if ($state && file_exists($storagePath)) {
+                            copy($storagePath, $publicPath);
+                            unlink($storagePath);
+                            $component->state('profile-photos/' . basename($state));
+                        }
+                    }),
             ]);
     }
 

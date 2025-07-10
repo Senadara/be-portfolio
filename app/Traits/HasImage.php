@@ -17,11 +17,7 @@ trait HasImage
         if (!$this->{$field}) {
             return null;
         }
-        if (filter_var($this->{$field}, FILTER_VALIDATE_URL)) {
-            return $this->{$field};
-        }
-        // Langsung asset ke public, hilangkan slash di depan jika ada
-        return asset(ltrim($this->{$field}, '/'));
+        return asset($this->{$field});
     }
 
     /**
