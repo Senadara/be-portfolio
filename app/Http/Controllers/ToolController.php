@@ -40,12 +40,16 @@ class ToolController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|string|max:255',
+            'icon' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        
+        if ($request->hasFile('icon')) {
+            $filename = uniqid() . '-' . $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move(public_path('tool-icons'), $filename);
+            $validated['icon'] = 'tool-icons/' . $filename;
+        }
         $tool = Tool::create($validated);
         $tool->icon_url = $tool->getImageUrl('icon');
         if ($request->expectsJson() || $request->wantsJson()) {
@@ -84,12 +88,16 @@ class ToolController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|string|max:255',
+            'icon' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        
+        if ($request->hasFile('icon')) {
+            $filename = uniqid() . '-' . $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move(public_path('tool-icons'), $filename);
+            $validated['icon'] = 'tool-icons/' . $filename;
+        }
         $tool->update($validated);
         $tool->icon_url = $tool->getImageUrl('icon');
         if ($request->expectsJson() || $request->wantsJson()) {

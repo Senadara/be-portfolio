@@ -36,11 +36,16 @@ class SoftSkillController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'icon' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        
+        if ($request->hasFile('icon')) {
+            $filename = uniqid() . '-' . $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move(public_path('soft-skill-icons'), $filename);
+            $validated['icon'] = 'soft-skill-icons/' . $filename;
+        }
         $softSkill = SoftSkill::create($validated);
         
         if ($request->expectsJson() || $request->wantsJson()) {
@@ -78,11 +83,16 @@ class SoftSkillController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'icon' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'proficiency_level' => 'nullable|integer|min:1|max:5',
         ]);
-        
+        if ($request->hasFile('icon')) {
+            $filename = uniqid() . '-' . $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move(public_path('soft-skill-icons'), $filename);
+            $validated['icon'] = 'soft-skill-icons/' . $filename;
+        }
         $softSkill->update($validated);
         
         if ($request->expectsJson() || $request->wantsJson()) {
