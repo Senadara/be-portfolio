@@ -21,10 +21,7 @@ use App\Http\Controllers\ToolController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::redirect('/', '/admin');
 
 Route::resource('portfolios', PortfolioController::class);
 Route::resource('achievements', AchievementController::class);
